@@ -38,7 +38,7 @@ module Statement
     "Default" => ->(words)  { true }
   }
 
-  TYPES.each do |type, type_lambda|
+  TYPES.keys.each do |type|
     Object.const_set(type, Struct.new(:type) do 
       def self.is_type?(words)
         TYPES[self.to_s].call(words)
