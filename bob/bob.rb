@@ -26,7 +26,7 @@ module Statement
     def self.build(words)
       TYPES.keys.each do |type| 
         type_class = Object.const_get(type)
-        return type_class.new if type_class.is_type?(words) 
+        return type_class.new(type.downcase.to_sym) if type_class.is_type?(words) 
       end
     end
   end
@@ -39,14 +39,10 @@ module Statement
   }
 
   TYPES.each do |type, type_lambda|
-    Object.const_set(type, Struct.new(:statement) do 
+    Object.const_set(type, Struct.new(:type) do 
       def self.is_type?(words)
         TYPES[self.to_s].call(words)
       end  
-
-      def type
-        self.class.to_s.downcase.to_sym
-      end
     end)
   end
 end
