@@ -1,12 +1,11 @@
 module Responder
   def hey(words)
-    responses[Statement::Builder.build(words).type]
+    responses[Statement.get_type(words)]
   end
 end
 
 module Teenager
   include Responder
-
   def responses
     {
       :nothing => "Fine. Be that way.",
@@ -22,27 +21,18 @@ class Bob
 end
 
 module Statement
-  module Builder
-    def self.build(words)
-      TYPES.keys.each do |type| 
-        type_class = Object.const_get(type)
-        return type_class.new(type.downcase.to_sym) if type_class.is_type?(words) 
-      end
+  def self.get_type(words)
+    TYPES.each do |type, condition| 
+      return type if condition.call(words)
     end
   end
 
   TYPES = {
-    "Nothing" => ->(words)  { words.to_s.empty? },
-    "Yelling" => ->(words)  { words.eql?(words.upcase) },
-    "Question" => ->(words) { words.end_with?("?") },
-    "Default" => ->(words)  { true }
+    :nothing  => ->(words) { words.to_s.empty? },
+    :yelling  => ->(words) { words.eql?(words.upcase) },
+    :question => ->(words) { words.end_with?("?") },
+    :default  => ->(words) { true }
   }
-
-  TYPES.keys.each do |type|
-    Object.const_set(type, Struct.new(:type) do 
-      def self.is_type?(words)
-        TYPES[self.to_s].call(words)
-      end  
-    end)
-  end
 end
+
+
