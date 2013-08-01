@@ -22,9 +22,7 @@ end
 
 module Statement
   def self.get_type(words)
-    TYPES.each do |type, condition| 
-      return type if condition.call(words)
-    end
+    TYPES.detect {|_, condition| condition.call(words) }.first
   end
 
   TYPES = {
