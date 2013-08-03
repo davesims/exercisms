@@ -8,7 +8,7 @@ module Teenager
   include Responder
   def responses
     {
-      :nothing => "Fine. Be that way.",
+      :nothing => "Fine. Be that way!",
       :yelling => "Woah, chill out!",
       :question => "Sure.",
       :default =>  "Whatever."

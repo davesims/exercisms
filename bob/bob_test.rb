@@ -51,11 +51,11 @@ begin
     end
 
     def test_silence
-      assert_equal 'Fine. Be that way.', teenager.hey('')
+      assert_equal 'Fine. Be that way!', teenager.hey('')
     end
 
     def test_more_silence
-      assert_equal 'Fine. Be that way.', teenager.hey(nil)
+      assert_equal 'Fine. Be that way!', teenager.hey(nil)
     end
   end
 
